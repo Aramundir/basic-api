@@ -35,7 +35,7 @@ class Entity(object):
     @classmethod
     def create_with_instance(cls, instance):
         if instance is None:
-            raise exceptions.NotExist('Tryed to create entity with instance None. Check the stack trace to see the origin')
+            raise exceptions.NotExist('Tried to create entity with instance None. Check the stack trace to see the origin')
         return cls(instance)
 
     def __init__(self, instance=None):
