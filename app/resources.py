@@ -2,15 +2,11 @@
 import json
 import re
 
-from flask import request, g, Response
+from flask import request
 from flask_restful import Resource
 
 
 class ResourceBase(Resource):
-
-    @property
-    def authenticated(self):
-        return getattr(g, 'authenticated', None)
 
     @staticmethod
     def camel_to_snake(name):
