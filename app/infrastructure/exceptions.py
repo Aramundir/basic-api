@@ -11,3 +11,7 @@ class AlreadyExist(Exception):
 
 class NotExist(Exception):
     pass
+
+
+class RepositoryError(Exception):
+    pass

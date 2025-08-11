@@ -5,6 +5,7 @@ import re
 from flask import request, g, Response
 from flask_restful import Resource
 
+
 class ResourceBase(Resource):
 
     @property
@@ -34,10 +35,6 @@ class ResourceBase(Resource):
                 if isinstance(item, dict):
                     data[index] = {method(key): self.transform_key(value, method) for key, value in item.items()}
         return data
-
-    @property
-    def logged_user(self):
-        return getattr(g, 'user', None)
 
     @property
     def payload(self):

@@ -3,17 +3,13 @@
 from sqlalchemy import exc, desc
 
 from app.infrastructure.database import orm
+from app.infrastructure import exceptions
 
 
 class AbstractModel(object):
     query = None
     _order_by = None
 
-    class NotExist(Exception):
-        pass
-
-    class RepositoryError(Exception):
-        pass
 
     @classmethod
     def create_from_json(cls, json_data, commit=False):
@@ -24,7 +20,7 @@ class AbstractModel(object):
             return instance
         except exc.IntegrityError as ex:
             cls.rollback_db()
-            raise cls.RepositoryError(ex)
+            raise exceptions.RepositoryError(ex)
 
     @classmethod
     def order_by(cls):
@@ -58,7 +54,7 @@ class AbstractModel(object):
     def get(cls, item_id):
         item = cls.query.get(item_id)
         if not item:
-            raise cls.NotExist
+            raise exceptions.NotExist
         else:
             return item
 
@@ -78,7 +74,7 @@ class AbstractModel(object):
             orm.session.delete(self)
             orm.session.flush()
         except exc.IntegrityError as ex:
-            raise self.RepositoryError(ex)
+            raise exceptions.RepositoryError(ex)
 
     def update_from_json(self, json_data):
         try:
@@ -86,7 +82,7 @@ class AbstractModel(object):
             self.save_db()
             return self
         except exc.IntegrityError as ex:
-            raise self.RepositoryError(ex)
+            raise exceptions.RepositoryError(ex)
 
     def set_values(self, json_data):
         for key, value in json_data.items():
